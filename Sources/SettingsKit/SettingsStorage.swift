@@ -8,21 +8,21 @@
 import Foundation
 
 @propertyWrapper
-public struct SettingsStorage<T, V> where T: PersistableSettings, T.Value == V {
+public struct SettingsStorage<T, V> where T: PersistentSettings, T.Value == V {
     public var wrappedValue: V {
         get {
-            store.map(type.value(in:)) ?? type.defaultValue
+            type.value(in: store)
         }
         set {
-            store?.set(newValue, forKey: type.userDefaultsKey)
+            type.set(newValue, to: store)
         }
     }
 
     private let type: T.Type
 
-    private let store: UserDefaults?
+    private let store: UserDefaults
 
-    public init(_ type: T.Type, store: UserDefaults?) {
+    public init(_ type: T.Type, store: UserDefaults) {
         self.type = type
         self.store = store
     }
