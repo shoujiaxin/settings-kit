@@ -20,6 +20,10 @@ let package = Package(
             name: "SettingsKit",
             targets: ["SettingsKit"]
         ),
+        .executable(
+            name: "SettingsKitClient",
+            targets: ["SettingsKitClient"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-syntax.git", from: "600.0.0-latest"),
@@ -42,6 +46,9 @@ let package = Package(
             name: "SettingsKit",
             dependencies: ["SettingsKitMacros"]
         ),
+
+        // A client of the library, which is able to use the macro in its own code.
+        .executableTarget(name: "SettingsKitClient", dependencies: ["SettingsKit"]),
 
         // A test target used to develop the macro implementation.
         .testTarget(
