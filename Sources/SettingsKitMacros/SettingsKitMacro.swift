@@ -14,11 +14,46 @@ public struct ObservableSettingsMacro: AccessorMacro {
     public static func expansion(
         of node: AttributeSyntax,
         providingAccessorsOf declaration: some DeclSyntaxProtocol,
-        in context: some MacroExpansionContext
+        in _: some MacroExpansionContext
     ) throws -> [AccessorDeclSyntax] {
-        print(node, declaration, context)
+        guard let arguments = node.arguments?.as(LabeledExprListSyntax.self),
+              arguments.count == 2
+        else {
+            // TODO: Throw an error.
+            return []
+        }
+
+        guard let typeName = arguments.first?.expression.as(MemberAccessExprSyntax.self)?.base,
+              let store = arguments.last?.expression
+        else {
+            // TODO: Throw an error.
+            return []
+        }
+
+        guard let bindings = declaration.as(VariableDeclSyntax.self)?.bindings,
+              bindings.count == 1
+        else {
+            // TODO: Throw an error.
+            return []
+        }
+
+        guard let propertyName = bindings.first?.pattern
+        else {
+            // TODO: Throw an error.
+            return []
+        }
+
         return [
             """
+            get {
+                access(keyPath: \\.\(propertyName))
+                return \(typeName).value(in: \(store))
+            }
+            set {
+                withMutation(keyPath: \\.\(propertyName)) {
+                    \(typeName).set(newValue, to: \(store))
+                }
+            }
             """,
         ]
     }

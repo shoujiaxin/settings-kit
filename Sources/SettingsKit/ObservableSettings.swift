@@ -7,7 +7,7 @@
 
 import Foundation
 
-@attached(accessor)
+@attached(accessor, names: named(get), named(set))
 public macro ObservableSettings<T>(
     _ type: T.Type,
     store: UserDefaults
