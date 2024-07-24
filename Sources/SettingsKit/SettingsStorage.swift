@@ -22,8 +22,8 @@ public struct SettingsStorage<T, V> where T: PersistentSettings, T.Value == V {
 
     private let store: UserDefaults
 
-    public init(_ type: T.Type, store: UserDefaults) {
+    public init(_ type: T.Type, store: UserDefaults? = nil) {
         self.type = type
-        self.store = store
+        self.store = store ?? .standard
     }
 }
