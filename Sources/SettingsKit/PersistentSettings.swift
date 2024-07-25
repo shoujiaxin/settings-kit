@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Interfaces
 
-public protocol PersistentSettings<Value> {
+public protocol PersistentSettings<Value>: Sendable where Value: Sendable {
     associatedtype Value
 
     static var defaultValue: Value { get }
