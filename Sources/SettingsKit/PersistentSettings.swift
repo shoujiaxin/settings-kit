@@ -55,7 +55,7 @@ public extension PersistentSettings where Value == Data {
 
 public extension PersistentSettings where Value == Bool {
     static func value(in store: UserDefaults) -> Value {
-        store.bool(forKey: userDefaultsKey)
+        store.object(forKey: userDefaultsKey).flatMap { $0 as? Value } ?? defaultValue
     }
 
     static func set(_ value: Value, to store: UserDefaults) {
@@ -65,7 +65,7 @@ public extension PersistentSettings where Value == Bool {
 
 public extension PersistentSettings where Value == Int {
     static func value(in store: UserDefaults) -> Value {
-        store.integer(forKey: userDefaultsKey)
+        store.object(forKey: userDefaultsKey).flatMap { $0 as? Value } ?? defaultValue
     }
 
     static func set(_ value: Value, to store: UserDefaults) {
@@ -75,7 +75,7 @@ public extension PersistentSettings where Value == Int {
 
 public extension PersistentSettings where Value == Float {
     static func value(in store: UserDefaults) -> Value {
-        store.float(forKey: userDefaultsKey)
+        store.object(forKey: userDefaultsKey).flatMap { $0 as? Value } ?? defaultValue
     }
 
     static func set(_ value: Value, to store: UserDefaults) {
@@ -85,7 +85,7 @@ public extension PersistentSettings where Value == Float {
 
 public extension PersistentSettings where Value == Double {
     static func value(in store: UserDefaults) -> Value {
-        store.double(forKey: userDefaultsKey)
+        store.object(forKey: userDefaultsKey).flatMap { $0 as? Value } ?? defaultValue
     }
 
     static func set(_ value: Value, to store: UserDefaults) {
@@ -95,7 +95,7 @@ public extension PersistentSettings where Value == Double {
 
 public extension PersistentSettings where Value: RawRepresentable, Value.RawValue == Int {
     static func value(in store: UserDefaults) -> Value {
-        Value(rawValue: store.integer(forKey: userDefaultsKey)) ?? defaultValue
+        store.object(forKey: userDefaultsKey).flatMap { $0 as? Value.RawValue }.flatMap(Value.init(rawValue:)) ?? defaultValue
     }
 
     static func set(_ value: Value, to store: UserDefaults) {
