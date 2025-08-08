@@ -16,6 +16,7 @@ struct ClientSettings: PersistentSettings {
     static let userDefaultsKey: String = "client settings key"
 }
 
+@available(iOS 17.0, *)
 @available(macOS 14.0, *)
 @Observable
 final class ViewModel {

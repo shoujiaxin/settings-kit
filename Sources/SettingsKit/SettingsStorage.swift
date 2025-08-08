@@ -9,26 +9,23 @@ import Foundation
 
 @frozen
 @propertyWrapper
-public struct SettingsStorage<T, V> where T: PersistentSettings, T.Value == V {
-    public var wrappedValue: V {
+public struct SettingsStorage<T> where T: PersistentSettings {
+    public var wrappedValue: T.Value {
         get {
-            type.value(in: store)
+            T.value(in: store)
         }
         set {
-            type.set(newValue, to: store)
+            T.set(newValue, to: store)
         }
     }
-
-    private let type: T.Type
 
     /// The user defaults store to read and write to.
     /// The `UserDefaults` class is thread-safe, so it's safe to be marked as `nonisolated(unsafe)`.
     private nonisolated(unsafe) let store: UserDefaults
 
-    public init(_ type: T.Type, store: UserDefaults? = nil) {
-        self.type = type
+    public init(_: T.Type, store: UserDefaults? = nil) {
         self.store = store ?? .standard
     }
 }
 
-extension SettingsStorage: Sendable where V: Sendable {}
+extension SettingsStorage: Sendable where T.Value: Sendable {}
