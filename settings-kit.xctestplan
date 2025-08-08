@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "5317D021-BA1F-4CA5-8E0A-44563B9C0AE2",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SettingsKitTests",
+        "name" : "SettingsKitTests"
+      }
+    }
+  ],
+  "version" : 1
+}
